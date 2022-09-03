@@ -1,18 +1,18 @@
-'use strict';
+"use strict";
 
-const messageBoard = document.querySelector('.message');
-const scoreBoard = document.querySelector('.score');
-const highscoreBoard = document.querySelector('.highscore');
-const numBoard = document.querySelector('.number');
+const messageBoard = document.querySelector(".message");
+const scoreBoard = document.querySelector(".score");
+const highscoreBoard = document.querySelector(".highscore");
+const numBoard = document.querySelector(".number");
 
-const bodyEl = document.querySelector('body');
+const bodyEl = document.querySelector("body");
 
-const checkbtn = document.querySelector('.check');
-const againbtn = document.querySelector('.again');
+const checkbtn = document.querySelector(".check");
+const againbtn = document.querySelector(".again");
 
-const guessinput = document.querySelector('.guess');
+const guessinput = document.querySelector(".guess");
 
-const upperrange = document.querySelector('.upperrange');
+const upperrange = document.querySelector(".upperrange");
 
 const gameGlobals = {
   initialScore: 20,
@@ -23,15 +23,17 @@ const gameGlobals = {
   gameEnd: false,
   prevInput: 0,
   message: {
-    startMode: 'Start guessing...',
-    highMode: '📉 Too high!',
-    lowMode: '📈 Too low!',
-    winMode: '✔ Correct Number!',
-    loseMode: '❌ Try Again!',
+    startMode: "Start guessing...",
+    highMode: "📉 Too high!",
+    lowMode: "📈 Too low!",
+    winMode: "✔ Correct Number!",
+    loseMode: "❌ Try Again!",
   },
 };
 
 const setUpGame = function () {
+  const upperBound = prompt("Upper bound");
+  gameGlobals.initialScore = upperBound;
   upperrange.textContent = gameGlobals.initialScore;
   gameGlobals.score = gameGlobals.initialScore;
   gameGlobals.gameEnd = false;
@@ -40,10 +42,10 @@ const setUpGame = function () {
   );
   console.log(gameGlobals.randomNumber);
   messageBoard.textContent = gameGlobals.message.startMode;
-  numBoard.textContent = '?';
+  numBoard.textContent = "?";
   guessinput.value = null;
-  numBoard.style.width = '15rem';
-  bodyEl.style.backgroundColor = '#222';
+  numBoard.style.width = "15rem";
+  bodyEl.style.backgroundColor = "#222";
   scoreBoard.textContent = gameGlobals.score;
 };
 setUpGame();
@@ -57,19 +59,19 @@ const isInRange = function (inputnum) {
 
 const checkHandler = function () {
   guessinput.focus();
-  if (!isInRange(Number(guessinput.value)) && guessinput.value !== '') {
+  if (!isInRange(Number(guessinput.value)) && guessinput.value !== "") {
     messageBoard.textContent = `Not in Range !1-${gameGlobals.initialScore}¡`;
-    guessinput.value = '';
+    guessinput.value = "";
     return;
   }
   if (
     !gameGlobals.gameEnd &&
-    guessinput.value !== '' &&
+    guessinput.value !== "" &&
     Number(guessinput.value) !== gameGlobals.prevInput
   ) {
     gameGlobals.numinput = Number(guessinput.value);
     gameGlobals.prevInput = Number(guessinput.value);
-    guessinput.value = '';
+    guessinput.value = "";
     if (gameGlobals.numinput > gameGlobals.randomNumber) {
       messageBoard.textContent = gameGlobals.message.highMode;
       gameGlobals.score--;
@@ -85,30 +87,30 @@ const checkHandler = function () {
         highscoreBoard.textContent = gameGlobals.highscore;
       }
       numBoard.textContent = gameGlobals.randomNumber;
-      numBoard.style.width = '30rem';
-      bodyEl.style.backgroundColor = '#2ecc71';
+      numBoard.style.width = "30rem";
+      bodyEl.style.backgroundColor = "#2ecc71";
       messageBoard.textContent = gameGlobals.message.winMode;
     }
     if (gameGlobals.score === 0) {
       gameGlobals.gameEnd = true;
-      numBoard.textContent = 'X';
-      bodyEl.style.backgroundColor = '#e74c3c';
+      numBoard.textContent = "X";
+      bodyEl.style.backgroundColor = "#e74c3c";
       messageBoard.textContent = gameGlobals.message.loseMode;
     }
   }
 };
 
-againbtn.addEventListener('click', setUpGame);
+againbtn.addEventListener("click", setUpGame);
 
-checkbtn.addEventListener('click', checkHandler);
+checkbtn.addEventListener("click", checkHandler);
 
-document.addEventListener('keydown', event => {
-  if (event.key === 'Enter') {
+document.addEventListener("keydown", event => {
+  if (event.key === "Enter") {
     checkHandler();
   }
 });
 
-guessinput.addEventListener('click', () => {
+guessinput.addEventListener("click", () => {
   if (!gameGlobals.gameEnd) {
     guessinput.value = null;
   }
