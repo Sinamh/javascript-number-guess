@@ -31,8 +31,19 @@ const gameGlobals = {
   },
 };
 
+function isNumeric(str) {
+  if (typeof str != "string") return false; // we only process strings!
+  return (
+    !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+    !isNaN(parseFloat(str))
+  ); // ...and ensure strings of whitespace fail
+}
+
 const setUpGame = function () {
-  const upperBound = prompt("Upper bound");
+  let upperBound = "";
+  do {
+    upperBound = prompt("Upper bound --> Enter any positive integer value");
+  } while (upperBound == null || upperBound == "" || !isNumeric(upperBound) || !Number.isInteger(Number(upperBound)) || upperBound <= 0);
   gameGlobals.initialScore = upperBound;
   upperrange.textContent = gameGlobals.initialScore;
   gameGlobals.score = gameGlobals.initialScore;
@@ -40,7 +51,6 @@ const setUpGame = function () {
   gameGlobals.randomNumber = Math.trunc(
     Math.random() * gameGlobals.initialScore + 1
   );
-  console.log(gameGlobals.randomNumber);
   messageBoard.textContent = gameGlobals.message.startMode;
   numBoard.textContent = "?";
   guessinput.value = null;
@@ -104,7 +114,7 @@ againbtn.addEventListener("click", setUpGame);
 
 checkbtn.addEventListener("click", checkHandler);
 
-document.addEventListener("keydown", event => {
+document.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
     checkHandler();
   }
